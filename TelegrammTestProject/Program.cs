@@ -24,15 +24,12 @@ namespace TelegramBotExperiments
                 if (message.Text.ToLower() == "/start")
                 {
 
+                    Random random = new Random();
 
-                    for (int i = 0; i < stringArray.Length; i++)
-                    {
+                    await botClient.SendTextMessageAsync(message.Chat, stringArray[new Random().Next(0, stringArray.Length)]);
 
 
-                        await botClient.SendTextMessageAsync(message.Chat, stringArray[i]);
-                        return;
 
-                    }
 
 
 
