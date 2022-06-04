@@ -11,9 +11,8 @@ namespace TelegramBotExperiments
     class Program
     {
         private static ITelegramBotClient bot = new TelegramBotClient("5539229150:AAEKqeMyt1oAPfdN471CDGGiEEXtaETu8Wc");
-        public static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
-        {
-            string[] stringArray = { "Если тебе вдруг станет грустно, помни всегда, " +
+
+        private static string[] stringArray = { "Если тебе вдруг станет грустно, помни всегда, " +
                     "что я рядом и я всегда тебя поддержу.", "Ты самая лучшая!", "Улыбнись!",
                 "По скорее возвращайся в Харьков", "Когда я вижу твою улыбку, мне хочеться взлететь до неба!",
                 "Твоей фигуре могут позавидовать даже супер модели!", "Твоя улыбка может сделать мир лучше, я постараюсь сделать чтобы ты чаще улыбалась",
@@ -25,15 +24,34 @@ namespace TelegramBotExperiments
                   "С тобою тепло и хорошо в любую погоду.", "Ум и красота несовместимы – но ты исключение из правил.",
                   "Всегда помни, ты особенная!", "Если тебе вдруг станет грустно, помни всегда, что я рядом и я всегда тебя поддержу.",
                   "Ты маленькая ведьма, ты околдовала меня своей красотой.", "Ты оооочень красивая", "Хочу тебя обнимать",
-                   "Создатель этого бота тебя очень любит", "Меня просили передать, что ты очень милая!", "Ты котик!"};
+                   "Создатель этого бота тебя очень любит", "Меня просили передать, что ты очень милая!", "Ты котик!",};
+        public static async Task HandleUpdateAsync(ITelegramBotClient botClient, Update update, CancellationToken cancellationToken)
+        {
+
 
             Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(update));
             if (update.Type == Telegram.Bot.Types.Enums.UpdateType.Message)
             {
+                await HandleMessage(botClient, update);
+            }
+            else if (update.Type == Telegram.Bot.Types.Enums.UpdateType.CallbackQuery)
+            {
+                await HandleCallbackQuesty(botClient, update);
+            }
+        }
 
-                var message = update.Message;
+        private static Task HandleCallbackQuesty(ITelegramBotClient botClient, Update update)
+        {
+            throw new NotImplementedException();
+        }
 
-                if (message.Text == "/start")
+        private static async Task HandleMessage(ITelegramBotClient botClient, Update update)
+        {
+            var message = update.Message;
+            if (message.Text != null)
+            {
+
+                if (message.Text.ToLower() == "/start")
                 {
 
                     Random random = new Random();
@@ -41,20 +59,7 @@ namespace TelegramBotExperiments
                     await botClient.SendTextMessageAsync(message.Chat, stringArray[new Random().Next(0, stringArray.Length)]);
 
 
-
-
-
-
-
                 }
-
-
-
-
-
-
-
-
 
             }
         }
